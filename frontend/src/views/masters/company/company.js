@@ -1,36 +1,30 @@
 import React, { useState } from 'react';
-
-import CompanyForm from './CompanyForm';
 import CompanyTable from './CompanyTable';
+import CompanyForm from './CompanyForm';
 import ToastNotification from './ToastNotification';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import $ from 'jquery'
-
-import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 
 const Company = () => {
-
-  const [editingCompanyMaster, setEditingCompanyMaster] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-
-  const handleEdit = (company_master) => {
-    setEditingCompanyMaster(company_master);
+  const handleEdit = (company) => {
+    setSelectedCompany(company);
     setShowForm(true);
   };
 
-  const handleSave = () => {
-    setEditingCompanyMaster(null);
+  const handleFormSubmit = () => {
+    setSelectedCompany(null);
     setShowForm(false);
-    setRefresh(!refresh); // Toggle the refresh state to trigger table update
+    setRefresh(!refresh);
   };
 
   const handleCancel = () => {
-    setEditingCompanyMaster(null);
+    setSelectedCompany(null);
     setShowForm(false);
   };
 
@@ -40,7 +34,7 @@ const Company = () => {
   };
 
   const handleAddCompanyMaster = () => {
-    setEditingCompanyMaster(null);
+    setSelectedCompany(null);
     setShowForm(true);
   };
 
@@ -53,15 +47,19 @@ const Company = () => {
               <strong>Company Master</strong>
             </CCardHeader>
             <CCardBody>
-              <button className="btn btn-primary mb-3" onClick={handleAddCompanyMaster}>Add New</button>
               {showForm ? (
                 <CompanyForm
-                  company_master={editingCompanyMaster}
-                  onSave={handleSave}
+                  company={selectedCompany}
+                  onSave={handleFormSubmit}
                   onCancel={handleCancel}
-                  onShowToast={handleShowToast} />
+                  onShowToast={handleShowToast}
+                />
               ) : (
-                <CompanyTable onEdit={handleEdit} refresh={refresh} onShowToast={handleShowToast} />
+                <CompanyTable
+                  onEdit={handleEdit}
+                  refresh={refresh}
+                  onShowToast={handleShowToast}
+                />
               )}
               <ToastNotification
                 show={showToast}
@@ -73,7 +71,7 @@ const Company = () => {
         </CCol>
       </CRow>
     </div>
-  )
-}
+  );
+};
 
-export default Company
+export default Company;

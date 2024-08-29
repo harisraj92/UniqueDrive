@@ -49,7 +49,7 @@ const AppSidebar = () => {
   }, []);
 
   return (
-    <CSidebar className="border-end bg-info"
+    <CSidebar className="border-end"
       position="fixed"
       unfoldable={unfoldable}
       visible={sidebarShow}

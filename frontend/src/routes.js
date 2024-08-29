@@ -26,6 +26,7 @@ const Company = React.lazy(() => import('./views/masters/company/company'))
 const Department = React.lazy(() => import('./views/masters/department/department'))
 const Designation = React.lazy(() => import('./views/masters/designation/designation'))
 const Rto = React.lazy(() => import('./views/masters/rto/rto'))
+const Leave = React.lazy(() => import('./views/masters/leave/leave'))
 
 
 //User Settings
@@ -34,6 +35,10 @@ const SubMenu = React.lazy(() => import('./views/user_settings/menu_settings/sub
 const InnerSubMenu = React.lazy(() => import('./views/user_settings/menu_settings/innersubmenu/index'))
 const Create_Template = React.lazy(() => import('./views/user_settings/create_template/index'))
 const Register_User = React.lazy(() => import('./views/user_settings/register_user/index'))
+
+
+//CommonSettings
+const ProfileSettings = React.lazy(() => import('./views/CommonSettings/profileSettings/index'))
 
 
 // Buttons
@@ -73,16 +78,21 @@ const routes = [
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
+
   { path: '/masters/company', name: 'Company', element: Company },
   { path: '/masters/department', name: 'Department', element: Department },
   { path: '/masters/designation', name: 'Designation', element: Designation },
   { path: '/masters/rto', name: 'Rto', element: Rto },
+  { path: '/masters/leave', name: 'Leave', element: Leave },
 
   { path: '/user_settings/menu_settings/mainmenu/', name: 'MainMenu', element: MainMenu },
   { path: '/user_settings/menu_settings/submenu/', name: 'SubMenu', element: SubMenu },
   { path: '/user_settings/menu_settings/innersubmenu/', name: 'InnerSubMenu', element: InnerSubMenu },
   { path: '/user_settings/create_template/', name: 'Create_Template', element: Create_Template },
   { path: '/user_settings/register_user/', name: 'Register_User', element: Register_User },
+
+  { path: '/CommonSettings/ProfileSettings/', name: 'ProfileSettings', element: ProfileSettings },
+
 
   { path: '/base', name: 'Base', element: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', element: Accordion },
