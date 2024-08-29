@@ -1,190 +1,305 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
-const CompanyForm = ({ company_master, onSave, onCancel, onShowToast }) => {
-    const [formData, setFormData] = useState({ cID: '', cCode: '', cName: '', cAddress: '', cLocation: '', cState: '', cCity: '', cPincode: '', cEmail: '', cNOP: '', cActive: '' });
+const CompanyForm = ({ company, onSave, onCancel }) => {
+    const [formData, setFormData] = useState({
+        CompanyCode: '',
+        CompanyName: '',
+        Address: '',
+        Location: '',
+        State: '',
+        City: '',
+        Pincode: '',
+        MailId: '',
+        NatureOfProject: '',
+        CompanyActiveStatus: false,
+        InactiveDate: '',
+        LicenseNo: '',
+        LicenseStrength: '',
+        EngagedStrength: '',
+        LicenseFrom: '',
+        LicenseTo: '',
+        GSTNo: '',
+        PANNo: '',
+        TAN: '',
+        TIN: '',
+        ServiceTaxNumber: '',
+        PurchaseOrderNo: '',
+        PurchaseOrderAvailable: false,
+        Devices: '',
+    });
 
     useEffect(() => {
-        if (company_master) {
-            setFormData(company_master);
-        } else {
-            setFormData({ cID: '', cCode: '', cName: '', cAddress: '', cLocation: '', cState: '', cCity: '', cPincode: '', cEmail: '', cNOP: '', cActive: '' });
+        if (company) {
+            setFormData(company);
         }
-    }, [company_master]);
-
+    }, [company]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value,
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            if (company_master) {
-                await axios.put(`http://localhost:5000/api/company_master/${company_master.id}`, formData);
-                onShowToast('company_master updated successfully');
+            if (company?.CompanyCode) {
+                // Update existing company
+                await axios.put(`http://localhost:5000/api/companymaster/${formData.CompanyCode}`, formData);
+                console.log("Company updated successfully");
             } else {
-                await axios.post('http://localhost:5000/api/company_master', formData);
-                onShowToast('company_master added successfully');
+                // Add new company
+                await axios.post('http://localhost:5000/api/companymaster', formData);
+                console.log("Company added successfully");
             }
             onSave();
         } catch (error) {
-            console.error('Error saving company_master:', error);
-            onShowToast('Error saving company_master');
+            console.error('Error saving company data:', error);
         }
     };
 
-    const handleCancel = () => {
-        setFormData({ cID: '', cCode: '', cName: '', cAddress: '', cLocation: '', cState: '', cCity: '', cPincode: '', cEmail: '', cNOP: '', cActive: '' }); // Reset form fields
-        onCancel(); // Call onCancel to perform any additional actions
-    };
 
     return (
-        <div>
-            <h6>{company_master ? 'Edit company_master' : 'Add company_master'}</h6>
-            <form onSubmit={handleSubmit}>
-                <div className='row g-3'>
-
-
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cID">cID:</label>
-                        <input
+        <Form onSubmit={handleSubmit}>
+            <Row>
+                <Col md={6}>
+                    <Form.Group controlId="CompanyCode">
+                        <Form.Label>Company Code</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control form-control-sm"
-                            id="cID"
-                            name="cID"
-                            value={formData.cID}
+                            name="CompanyCode"
+                            value={formData.CompanyCode}
                             onChange={handleChange}
+                            required
                         />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cCode">cCode:</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group controlId="CompanyName">
+                        <Form.Label>Company Name</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control form-control-sm"
-                            id="cCode"
-                            name="cCode"
-                            value={formData.cCode}
+                            name="CompanyName"
+                            value={formData.CompanyName}
                             onChange={handleChange}
+                            required
                         />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cName">cName:</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group controlId="Address">
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            name="Address"
+                            value={formData.Address}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="Location">
+                        <Form.Label>Location</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control form-control-sm"
-                            id="cName"
-                            name="cName"
-                            value={formData.cName}
+                            name="Location"
+                            value={formData.Location}
                             onChange={handleChange}
+                            required
                         />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cAddress">cAddress:</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group controlId="State">
+                        <Form.Label>State</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control form-control-sm"
-                            id="cAddress"
-                            name="cAddress"
-                            value={formData.cAddress}
+                            name="State"
+                            value={formData.State}
                             onChange={handleChange}
+                            required
                         />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cLocation">cLocation:</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group controlId="City">
+                        <Form.Label>City</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control form-control-sm"
-                            id="cLocation"
-                            name="cLocation"
-                            value={formData.cLocation}
+                            name="City"
+                            value={formData.City}
                             onChange={handleChange}
+                            required
                         />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cState">cState:</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group controlId="Pincode">
+                        <Form.Label>Pincode</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control form-control-sm"
-                            id="cState"
-                            name="cState"
-                            value={formData.cState}
+                            name="Pincode"
+                            value={formData.Pincode}
                             onChange={handleChange}
+                            required
                         />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cCity">cCity:</label>
-                        <input
-                            type="text"
-                            className="form-control form-control-sm"
-                            id="cCity"
-                            name="cCity"
-                            value={formData.cCity}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cPincode">cPincode:</label>
-                        <input
-                            type="text"
-                            className="form-control form-control-sm"
-                            id="cPincode"
-                            name="cPincode"
-                            value={formData.cPincode}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cEmail">cEmail:</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group controlId="MailId">
+                        <Form.Label>Mail Id</Form.Label>
+                        <Form.Control
                             type="email"
-                            className="form-control form-control-sm"
-                            id="cEmail"
-                            name="cEmail"
-                            value={formData.cEmail}
+                            name="MailId"
+                            value={formData.MailId}
                             onChange={handleChange}
+                            required
                         />
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label htmlFor="cNOP">cNOP:</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group controlId="NatureOfProject">
+                        <Form.Label>Nature Of Project</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control form-control-sm"
-                            id="cNOP"
-                            name="cNOP"
-                            value={formData.cNOP}
+                            name="NatureOfProject"
+                            value={formData.NatureOfProject}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group controlId="LicenseNo">
+                        <Form.Label>License No</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="LicenseNo"
+                            value={formData.LicenseNo}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="LicenseStrength">
+                        <Form.Label>License Strength</Form.Label>
+                        <Form.Control
+                            type="number"
+                            name="LicenseStrength"
+                            value={formData.LicenseStrength}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="EngagedStrength">
+                        <Form.Label>Engaged Strength</Form.Label>
+                        <Form.Control
+                            type="number"
+                            name="EngagedStrength"
+                            value={formData.EngagedStrength}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="LicenseFrom">
+                        <Form.Label>License From</Form.Label>
+                        <Form.Control
+                            type="date"
+                            name="LicenseFrom"
+                            value={formData.LicenseFrom}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="LicenseTo">
+                        <Form.Label>License To</Form.Label>
+                        <Form.Control
+                            type="date"
+                            name="LicenseTo"
+                            value={formData.LicenseTo}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="GSTNo">
+                        <Form.Label>GST No</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="GSTNo"
+                            value={formData.GSTNo}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="PANNo">
+                        <Form.Label>PAN No</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="PANNo"
+                            value={formData.PANNo}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="TAN">
+                        <Form.Label>TAN</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="TAN"
+                            value={formData.TAN}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="TIN">
+                        <Form.Label>TIN</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="TIN"
+                            value={formData.TIN}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="ServiceTaxNumber">
+                        <Form.Label>Service Tax Number</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="ServiceTaxNumber"
+                            value={formData.ServiceTaxNumber}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="PurchaseOrderNo">
+                        <Form.Label>Purchase Order No</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="PurchaseOrderNo"
+                            value={formData.PurchaseOrderNo}
+                            onChange={handleChange}
+
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="PurchaseOrderAvailable">
+                        <Form.Check
+                            type="checkbox"
+                            label="Purchase Order Available?"
+                            name="PurchaseOrderAvailable"
+                            checked={formData.PurchaseOrderAvailable}
                             onChange={handleChange}
                         />
-                    </div>
-
-                    <div className="form-group">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" id="cActive" name="cActive" value={formData.cActive} onChange={handleChange} />
-                            <label className="form-check-label" htmlFor="cActive">
-                                Active
-                            </label>
-                        </div>
-                    </div>
-                    <div className='form-group'>
-                        <button type="submit" className="btn btn-primary me-2">
-                            Save
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={handleCancel}
+                    </Form.Group>
+                    <Form.Group controlId="Devices">
+                        <Form.Label>Devices</Form.Label>
+                        <Form.Control
+                            as="select"
+                            name="Devices"
+                            value={formData.Devices}
+                            onChange={handleChange}
                         >
-                            Cancel
-                        </button>
-                    </div>
+                            <option>Select Device</option>
+                            <option>Device 1</option>
+                            <option>Device 2</option>
+                        </Form.Control>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <div className="text-center mt-3">
+                <Button variant="primary" type="submit">Save</Button>
+                <Button variant="secondary" onClick={onCancel} className="ms-2">Cancel</Button>
+            </div>
+        </Form>
+    );
+};
 
-                </div>
-            </form>
-        </div>
-    )
-}
-
-export default CompanyForm
+export default CompanyForm;

@@ -113,6 +113,11 @@ CREATE TABLE Users (
   FOREIGN KEY (template_id) REFERENCES Template(id)
 );
 
+CREATE TABLE ProfileSettings (
+    ProfileId INT AUTO_INCREMENT PRIMARY KEY,
+    ProfileType VARCHAR(255) NOT NULL,
+    ProfileName VARCHAR(255) NOT NULL
+);
 
 
 
